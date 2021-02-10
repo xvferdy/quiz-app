@@ -44,8 +44,28 @@ app.post("/users", (req, res) => {
 
 //update
 app.put("/users", (req, res) => {
+  //#1 ambil nama baru
+  //#2 loop pada userList lalu ganti name
+  //#3 liat data userList yang baru
   let newName = req.body.newName;
   userList.map((user) => (user.id === 3 ? (user.name = newName) : user));
+  res.json(userList);
+});
+
+//delete
+app.delete("/users/:id", (req, res) => {
+  //#1 ambil id yg mau delete
+  //#2 delete user dgn id tsb
+  //#3 liat data userList yang baru
+  const id = req.params.id;
+  console.log(typeof id);
+
+  for (let i = 0; i < userList.length; i++) {
+    if (userList[i].id == id) {
+      userList.splice(i, 1);
+    }
+  }
+
   res.json(userList);
 });
 
