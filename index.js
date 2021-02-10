@@ -31,6 +31,7 @@ app.get("/users", (req, res) => {
   res.json(userList);
 });
 
+//create
 app.post("/users", (req, res) => {
   //#1 ambil data yang mau di tambahkan (untuk datanya coba langsung via postman)
   //#2 masukan data ke dalam userList
@@ -41,16 +42,22 @@ app.post("/users", (req, res) => {
   res.json(userList);
 });
 
+//update
+app.put("/users", (req, res) => {
+  let newName = req.body.newName;
+  userList.map((user) => (user.id === 3 ? (user.name = newName) : user));
+  res.json(userList);
+});
+
 app.listen(3000, () => {
   console.log("Listening on port 3000");
 });
-
 console.log("inside console");
 
 //==================== database sementara ====================
 
 let userList = [
-  { name: "ferdy", age: 24, married: false },
-  { name: "clara", age: 19, married: false },
-  { name: "beni", age: 20, married: true },
+  { id: 1, name: "ferdy", age: 24, married: false },
+  { id: 2, name: "clara", age: 19, married: false },
+  { id: 3, name: "beni", age: 20, married: true },
 ];
