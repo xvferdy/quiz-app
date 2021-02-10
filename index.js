@@ -10,28 +10,11 @@ app.use(
   })
 );
 
-// app.get("/", (req, res) => {
-//   res.send(`
-//     <div>
-//     <form action="/" method="POST">
-//       <input placeholder="email" name="email!"/>
-//       <input placeholder="password" />
-//       <input placeholder="password confirmation" />
-//       <button>Sign Up</button>
-//     </form>
-//   </div>
-//     `);
-// });
-
-// app.post("/", (req, res) => {
-//   console.log(req.body);
-// });
-
 app.get("/users", (req, res) => {
   res.json(userList);
 });
 
-//create
+//CREATE
 app.post("/users", (req, res) => {
   //#1 ambil data yang mau di tambahkan (untuk datanya coba langsung via postman)
   //#2 masukan data ke dalam userList
@@ -42,7 +25,7 @@ app.post("/users", (req, res) => {
   res.json(userList);
 });
 
-//update
+//UPDATE
 app.put("/users", (req, res) => {
   //#1 ambil nama baru
   //#2 loop pada userList lalu ganti name
@@ -52,7 +35,7 @@ app.put("/users", (req, res) => {
   res.json(userList);
 });
 
-//delete
+//DELETE
 app.delete("/users/:id", (req, res) => {
   //#1 ambil id yg mau delete
   //#2 delete user dgn id tsb
@@ -60,13 +43,20 @@ app.delete("/users/:id", (req, res) => {
   const id = req.params.id;
   console.log(typeof id);
 
+  let foundId = false;
   for (let i = 0; i < userList.length; i++) {
     if (userList[i].id == id) {
       userList.splice(i, 1);
+      foundId = true;
     }
   }
 
-  res.json(userList);
+  //error handling
+  if (foundId) {
+    res.json(userList);
+  } else {
+    res.status(404).json({ error: "id not found" });
+  }
 });
 
 app.listen(3000, () => {
