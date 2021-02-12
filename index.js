@@ -1,5 +1,14 @@
 const express = require("express");
 const app = express();
+
+const mysql = require("mysql");
+const db = mysql.createConnection({
+  user: "root",
+  host: "localhost",
+  password: "",
+  database: "userdb",
+});
+
 const bodyParser = require("body-parser");
 
 app.use(express.json());
@@ -10,8 +19,14 @@ app.use(
   })
 );
 
+// app.get("/users", (req, res) => {
+//   res.json(userList);
+// });
+
 app.get("/users", (req, res) => {
-  res.json(userList);
+  db.query("SELECT * FROM user;", (err, result) => {
+    res.json(result);
+  });
 });
 
 //CREATE
