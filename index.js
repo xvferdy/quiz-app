@@ -23,9 +23,14 @@ app.use(
 //   res.json(userList);
 // });
 
+//READ
 app.get("/users", (req, res) => {
-  db.query("SELECT * FROM user;", (err, result) => {
-    res.json(result);
+  db.query("SELECT * FROM users;", (err, result) => {
+    if (err) {
+      res.status(400).json(err);
+    } else {
+      res.status(200).json(result);
+    }
   });
 });
 
@@ -35,10 +40,25 @@ app.post("/users", (req, res) => {
   //#2 masukan data ke dalam userList
   //#3 liat data userList yang baru
 
-  let newUser = req.body; //newUser => via postman (data berupa json)
-  userList.push(newUser);
-  res.json(userList);
+  // let newUser = req.body; //newUser => via postman (data berupa json)
+  // userList.push(newUser);
+  // res.json(userList);
+
+  const { name, age } = req.body;
+  db.query(
+    "INSERT INTO users (name, age) VALUES (?, ?);",
+    [name, age],
+    (err, result) => {
+      if (err) {
+        res.status(400).json(err);
+      } else {
+        res.status(200).json(result);
+      }
+    }
+  );
 });
+
+//==================== *** ====================
 
 //UPDATE
 app.put("/users", (req, res) => {
@@ -56,7 +76,7 @@ app.delete("/users/:id", (req, res) => {
   //#2 delete user dgn id tsb
   //#3 liat data userList yang baru
   const id = req.params.id;
-  console.log(typeof id);
+  console.log(typeof id); //string
 
   let foundId = false;
   for (let i = 0; i < userList.length; i++) {
